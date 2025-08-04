@@ -101,14 +101,14 @@ LOGIN_REDIRECT_URL = '/api/user/'
 LOGOUT_REDIRECT_URL = '/api/login/'
 
 # CORS Configuration for cross-origin requests
-# CORS_ALLOWED_ORIGINS = [
-#     "http://localhost:3000",
-#     "http://127.0.0.1:3000",
-#     "https://localhost:3000",
-#     "https://127.0.0.1:3000",
-# ]
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+    "https://localhost:3000",
+    "https://127.0.0.1:3000",
+]
 
-CORS_ALLOW_ALL_ORIGINS = True
+# CORS_ALLOW_ALL_ORIGINS = True
 
 # Allow credentials (cookies, authorization headers)
 CORS_ALLOW_CREDENTIALS = True
@@ -128,13 +128,13 @@ CORS_ALLOW_METHODS = [
 # For local frontend + EC2 backend setup
 SESSION_COOKIE_SECURE = False  # Set to False since we're using HTTP
 SESSION_COOKIE_HTTPONLY = True
-SESSION_COOKIE_SAMESITE = 'None'  # Required for cross-origin
+SESSION_COOKIE_SAMESITE = 'Lax'  # Required for cross-origin
 SESSION_COOKIE_DOMAIN = None  # Set to None for cross-origin requests
 
 # CSRF Settings for cross-origin
 CSRF_COOKIE_SECURE = False  # Set to False since we're using HTTP
-CSRF_COOKIE_HTTPONLY = False  # Allow JavaScript access
-CSRF_COOKIE_SAMESITE = 'None'  # Required for cross-origin
+CSRF_COOKIE_HTTPONLY = True  # Allow JavaScript access
+CSRF_COOKIE_SAMESITE = 'Lax'  # Required for cross-origin
 CSRF_COOKIE_DOMAIN = None  # Set to None for cross-origin requests
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost:3000",

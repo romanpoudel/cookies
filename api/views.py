@@ -22,6 +22,9 @@ def login_view(request):
         password = data.get('password', 'testpass123')
 
         user = authenticate(request, username=username, password=password)
+        print("================")
+        print("user", user)
+        print("================")
 
         if user is not None:
             login(request, user)
@@ -43,7 +46,7 @@ def login_view(request):
                 'test-auth-token-123',
                 max_age=3600,  # 1 hour
                 httponly=True,
-                samesite='None',  # 'None' for cross-origin requests
+                samesite='Lax',  # 'Lax' works with HTTP, 'None' requires HTTPS
                 secure=settings.SESSION_COOKIE_SECURE,  # False for HTTP, True for HTTPS
                 domain=None  # None for cross-origin requests
             )
@@ -53,7 +56,7 @@ def login_view(request):
                 'dark_mode',
                 max_age=86400,  # 24 hours
                 httponly=False,  # Allow JavaScript access
-                samesite='None',  # 'None' for cross-origin requests
+                samesite='Lax',  # 'Lax' works with HTTP, 'None' requires HTTPS
                 secure=settings.SESSION_COOKIE_SECURE,  # False for HTTP, True for HTTPS
                 domain=None  # None for cross-origin requests
             )
@@ -84,10 +87,8 @@ def logout_view(request):
     })
 
     # Clear custom cookies with same settings as when they were set
-    response.delete_cookie('auth_token', samesite='None',
-                           secure=settings.SESSION_COOKIE_SECURE)
-    response.delete_cookie('user_preference', samesite='None',
-                           secure=settings.SESSION_COOKIE_SECURE)
+    response.delete_cookie('auth_token', samesite='Lax')
+    response.delete_cookie('user_preference', samesite='Lax')
 
     return response
 
@@ -103,10 +104,8 @@ def logout_public(request):
     })
 
     # Clear custom cookies with same settings as when they were set
-    response.delete_cookie('auth_token', samesite='None',
-                           secure=settings.SESSION_COOKIE_SECURE)
-    response.delete_cookie('user_preference', samesite='None',
-                           secure=settings.SESSION_COOKIE_SECURE)
+    response.delete_cookie('auth_token', samesite='Lax')
+    response.delete_cookie('user_preference', samesite='Lax')
 
     return response
 
@@ -125,14 +124,18 @@ def user_info(request):
                 'is_authenticated': request.user.is_authenticated
             },
             'session_id': request.session.session_key,
-            'cookies': dict(request.COOKIES)
+            'cookies': dict(request.COOKIES),
+            'is_authenticated': True
         })
     else:
         return Response({
-            'success': False,
+            'success': True,
             'message': 'User not authenticated',
-            'is_authenticated': False
-        }, status=401)
+            'is_authenticated': False,
+            'user': None,
+            'session_id': request.session.session_key if request.session.session_key else None,
+            'cookies': dict(request.COOKIES)
+        })
 
 
 @api_view(['GET'])
@@ -157,8 +160,8 @@ def set_custom_cookie(request):
         cookie_value = data.get('value', 'default_value')
         cookie_max_age = data.get('max_age', 3600)
         cookie_httponly = data.get('httponly', True)
-        # Default to 'None' for cross-origin
-        cookie_samesite = data.get('samesite', 'None')
+        # Default to 'Lax' for HTTP development
+        cookie_samesite = data.get('samesite', 'Lax')
 
         response = JsonResponse({
             'success': True,
