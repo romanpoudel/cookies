@@ -12,7 +12,7 @@ SECRET_KEY = config(
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', default=True, cast=bool)
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', '0.0.0.0']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '0.0.0.0','ec2-43-204-214-102.ap-south-1.compute.amazonaws.com']
 
 # Application definition
 INSTALLED_APPS = [
