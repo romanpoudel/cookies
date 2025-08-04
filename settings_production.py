@@ -67,8 +67,8 @@ CSRF_TRUSTED_ORIGINS = [
 ]
 
 # Additional security settings for production
-SECURE_BROWSER_XSS_FILTER = True
-SECURE_CONTENT_TYPE_NOSNIFF = True
+SECURE_BROWSER_XSS_FILTER = False
+SECURE_CONTENT_TYPE_NOSNIFF = False
 X_FRAME_OPTIONS = 'DENY'
 
 # Database settings (example for PostgreSQL)

@@ -106,8 +106,6 @@ CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:3000",
     "https://localhost:3000",
     "https://127.0.0.1:3000",
-    "http://ec2-43-204-214-102.ap-south-1.compute.amazonaws.com",
-    "https://ec2-43-204-214-102.ap-south-1.compute.amazonaws.com"
 ]
 
 # Allow credentials (cookies, authorization headers)
@@ -129,14 +127,13 @@ CORS_ALLOW_METHODS = [
 SESSION_COOKIE_SECURE = False  # Set to False since we're using HTTP
 SESSION_COOKIE_HTTPONLY = True
 SESSION_COOKIE_SAMESITE = 'None'  # Required for cross-origin
-# Your EC2 domain
-SESSION_COOKIE_DOMAIN = 'ec2-43-204-214-102.ap-south-1.compute.amazonaws.com'
+SESSION_COOKIE_DOMAIN = None  # Set to None for cross-origin requests
 
 # CSRF Settings for cross-origin
 CSRF_COOKIE_SECURE = False  # Set to False since we're using HTTP
 CSRF_COOKIE_HTTPONLY = False  # Allow JavaScript access
 CSRF_COOKIE_SAMESITE = 'None'  # Required for cross-origin
-CSRF_COOKIE_DOMAIN = 'ec2-43-204-214-102.ap-south-1.compute.amazonaws.com'  # Your EC2 domain
+CSRF_COOKIE_DOMAIN = None  # Set to None for cross-origin requests
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost:3000",
     "https://localhost:3000",

@@ -44,7 +44,8 @@ def login_view(request):
                 max_age=3600,  # 1 hour
                 httponly=True,
                 samesite='None',  # 'None' for cross-origin requests
-                secure=settings.SESSION_COOKIE_SECURE  # False for HTTP, True for HTTPS
+                secure=settings.SESSION_COOKIE_SECURE,  # False for HTTP, True for HTTPS
+                domain=None  # None for cross-origin requests
             )
 
             response.set_cookie(
@@ -53,7 +54,8 @@ def login_view(request):
                 max_age=86400,  # 24 hours
                 httponly=False,  # Allow JavaScript access
                 samesite='None',  # 'None' for cross-origin requests
-                secure=settings.SESSION_COOKIE_SECURE  # False for HTTP, True for HTTPS
+                secure=settings.SESSION_COOKIE_SECURE,  # False for HTTP, True for HTTPS
+                domain=None  # None for cross-origin requests
             )
 
             return response
