@@ -13,7 +13,7 @@ SECRET_KEY = config(
 DEBUG = config('DEBUG', default=True, cast=bool)
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', '0.0.0.0',
-                 'ec2-43-204-214-102.ap-south-1.compute.amazonaws.com']
+                 'ec2-13-233-120-174.ap-south-1.compute.amazonaws.com']
 
 # Application definition
 INSTALLED_APPS = [
@@ -101,12 +101,14 @@ LOGIN_REDIRECT_URL = '/api/user/'
 LOGOUT_REDIRECT_URL = '/api/login/'
 
 # CORS Configuration for cross-origin requests
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",
-    "http://127.0.0.1:3000",
-    "https://localhost:3000",
-    "https://127.0.0.1:3000",
-]
+# CORS_ALLOWED_ORIGINS = [
+#     "http://localhost:3000",
+#     "http://127.0.0.1:3000",
+#     "https://localhost:3000",
+#     "https://127.0.0.1:3000",
+# ]
+
+CORS_ALLOW_ALL_ORIGINS = True
 
 # Allow credentials (cookies, authorization headers)
 CORS_ALLOW_CREDENTIALS = True
@@ -139,8 +141,8 @@ CSRF_TRUSTED_ORIGINS = [
     "https://localhost:3000",
     "http://127.0.0.1:3000",
     "https://127.0.0.1:3000",
-    "http://ec2-43-204-214-102.ap-south-1.compute.amazonaws.com",
-    "https://ec2-43-204-214-102.ap-south-1.compute.amazonaws.com"
+    "http://ec2-13-233-120-174.ap-south-1.compute.amazonaws.com",
+    "https://ec2-13-233-120-174.ap-south-1.compute.amazonaws.com"
 ]
 
 # REST Framework Settings
