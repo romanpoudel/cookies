@@ -4,6 +4,10 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated, AllowAny
+from rest_framework.response import Response
+from rest_framework import status
 import json
 import os
 
@@ -105,25 +109,35 @@ def logout_public(request):
     return response
 
 
-@login_required
+@api_view(['GET'])
+@permission_classes([AllowAny])
 def user_info(request):
-    """Get current user information"""
-    return JsonResponse({
-        'success': True,
-        'user': {
-            'id': request.user.id,
-            'username': request.user.username,
-            'email': request.user.email,
-            'is_authenticated': request.user.is_authenticated
-        },
-        'session_id': request.session.session_key,
-        'cookies': dict(request.COOKIES)
-    })
+    """Get current user information - returns JSON instead of redirecting"""
+    if request.user.is_authenticated:
+        return Response({
+            'success': True,
+            'user': {
+                'id': request.user.id,
+                'username': request.user.username,
+                'email': request.user.email,
+                'is_authenticated': request.user.is_authenticated
+            },
+            'session_id': request.session.session_key,
+            'cookies': dict(request.COOKIES)
+        })
+    else:
+        return Response({
+            'success': False,
+            'message': 'User not authenticated',
+            'is_authenticated': False
+        }, status=401)
 
 
+@api_view(['GET'])
+@permission_classes([AllowAny])
 def test_cookie(request):
     """Test endpoint to check if cookies are being sent"""
-    return JsonResponse({
+    return Response({
         'success': True,
         'message': 'Cookie test endpoint',
         'received_cookies': dict(request.COOKIES),

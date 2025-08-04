@@ -95,6 +95,11 @@ STATIC_URL = 'static/'
 # Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# Login URL configuration - prevent redirect to /accounts/login/
+LOGIN_URL = '/api/login/'
+LOGIN_REDIRECT_URL = '/api/user/'
+LOGOUT_REDIRECT_URL = '/api/login/'
+
 # CORS Configuration for cross-origin requests
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
