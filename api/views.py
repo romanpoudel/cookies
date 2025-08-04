@@ -33,14 +33,14 @@ def login_view(request):
                 }
             })
 
-            # Set custom cookies with different configurations
+            # Set custom cookies with cross-origin compatible settings
             response.set_cookie(
                 'auth_token',
                 'test-auth-token-123',
                 max_age=3600,  # 1 hour
                 httponly=True,
-                samesite='Lax',
-                secure=settings.SESSION_COOKIE_SECURE
+                samesite='None',  # 'None' for cross-origin requests
+                secure=settings.SESSION_COOKIE_SECURE  # False for HTTP, True for HTTPS
             )
 
             response.set_cookie(
@@ -48,8 +48,8 @@ def login_view(request):
                 'dark_mode',
                 max_age=86400,  # 24 hours
                 httponly=False,  # Allow JavaScript access
-                samesite='Lax',
-                secure=settings.SESSION_COOKIE_SECURE
+                samesite='None',  # 'None' for cross-origin requests
+                secure=settings.SESSION_COOKIE_SECURE  # False for HTTP, True for HTTPS
             )
 
             return response
@@ -77,9 +77,11 @@ def logout_view(request):
         'message': 'Logout successful'
     })
 
-    # Clear custom cookies
-    response.delete_cookie('auth_token')
-    response.delete_cookie('user_preference')
+    # Clear custom cookies with same settings as when they were set
+    response.delete_cookie('auth_token', samesite='None',
+                           secure=settings.SESSION_COOKIE_SECURE)
+    response.delete_cookie('user_preference', samesite='None',
+                           secure=settings.SESSION_COOKIE_SECURE)
 
     return response
 
@@ -94,9 +96,11 @@ def logout_public(request):
         'message': 'Logout successful'
     })
 
-    # Clear custom cookies
-    response.delete_cookie('auth_token')
-    response.delete_cookie('user_preference')
+    # Clear custom cookies with same settings as when they were set
+    response.delete_cookie('auth_token', samesite='None',
+                           secure=settings.SESSION_COOKIE_SECURE)
+    response.delete_cookie('user_preference', samesite='None',
+                           secure=settings.SESSION_COOKIE_SECURE)
 
     return response
 
@@ -137,7 +141,8 @@ def set_custom_cookie(request):
         cookie_value = data.get('value', 'default_value')
         cookie_max_age = data.get('max_age', 3600)
         cookie_httponly = data.get('httponly', True)
-        cookie_samesite = data.get('samesite', 'Lax')
+        # Default to 'None' for cross-origin
+        cookie_samesite = data.get('samesite', 'None')
 
         response = JsonResponse({
             'success': True,

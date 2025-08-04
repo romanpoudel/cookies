@@ -12,7 +12,8 @@ SECRET_KEY = config(
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', default=True, cast=bool)
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', '0.0.0.0','ec2-43-204-214-102.ap-south-1.compute.amazonaws.com']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '0.0.0.0',
+                 'ec2-43-204-214-102.ap-south-1.compute.amazonaws.com']
 
 # Application definition
 INSTALLED_APPS = [
@@ -94,7 +95,7 @@ STATIC_URL = 'static/'
 # Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# CORS Configuration
+# CORS Configuration for cross-origin requests
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
@@ -102,27 +103,40 @@ CORS_ALLOWED_ORIGINS = [
     "https://127.0.0.1:3000",
 ]
 
-# For development - allow credentials
+# Allow credentials (cookies, authorization headers)
 CORS_ALLOW_CREDENTIALS = True
 
-# Additional CORS settings for development
-CORS_ALLOW_ALL_ORIGINS = DEBUG  # Only in development
+# Allow all headers and methods for development
+CORS_ALLOW_ALL_HEADERS = True
+CORS_ALLOW_METHODS = [
+    'DELETE',
+    'GET',
+    'OPTIONS',
+    'PATCH',
+    'POST',
+    'PUT',
+]
 
-# Cookie Settings
-# These settings are crucial for cookie handling
+# Cookie Settings for cross-origin requests
+# For local frontend + EC2 backend setup
+# False for HTTP, True for HTTPS
 SESSION_COOKIE_SECURE = config(
     'SESSION_COOKIE_SECURE', default=False, cast=bool)
 SESSION_COOKIE_HTTPONLY = True
-SESSION_COOKIE_SAMESITE = 'Lax'  # 'Lax' for development, 'None' for cross-origin
-SESSION_COOKIE_DOMAIN = config('SESSION_COOKIE_DOMAIN', default=None)
+SESSION_COOKIE_SAMESITE = 'None'  # 'None' for cross-origin requests
+SESSION_COOKIE_DOMAIN = config(
+    'SESSION_COOKIE_DOMAIN', default=None)  # None for cross-origin
 
-# CSRF Settings
+# CSRF Settings for cross-origin
+# False for HTTP, True for HTTPS
 CSRF_COOKIE_SECURE = config('CSRF_COOKIE_SECURE', default=False, cast=bool)
 CSRF_COOKIE_HTTPONLY = False  # Allow JavaScript access
-CSRF_COOKIE_SAMESITE = 'Lax'
+CSRF_COOKIE_SAMESITE = 'None'  # 'None' for cross-origin requests
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost:3000",
     "https://localhost:3000",
+    "http://127.0.0.1:3000",
+    "https://127.0.0.1:3000",
 ]
 
 # REST Framework Settings
