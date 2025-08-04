@@ -141,8 +141,8 @@ CSRF_TRUSTED_ORIGINS = [
     "https://localhost:3000",
     "http://127.0.0.1:3000",
     "https://127.0.0.1:3000",
-    "http://ec2-13-233-120-174.ap-south-1.compute.amazonaws.com",
-    "https://ec2-13-233-120-174.ap-south-1.compute.amazonaws.com"
+    "http://ec2-13-233-120-174.ap-south-1.compute.amazonaws.com:3000",
+    "https://ec2-13-233-120-174.ap-south-1.compute.amazonaws.com:3000"
 ]
 
 # REST Framework Settings
